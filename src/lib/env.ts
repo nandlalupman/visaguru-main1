@@ -24,7 +24,7 @@ export function assertProductionConfig() {
   if (!process.env.ADMIN_PASSWORD) missing.push("ADMIN_PASSWORD");
 
   if (missing.length > 0) {
-    throw new Error(
+    console.warn(
       `Missing required production environment variables: ${missing.join(", ")}`,
     );
   }

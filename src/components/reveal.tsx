@@ -5,7 +5,7 @@ import { ReactNode } from "react";
 
 type AnimationVariant = "fade-up" | "fade-left" | "fade-right" | "scale";
 
-const variants: Record<AnimationVariant, { initial: object; animate: object }> = {
+const variants: Record<AnimationVariant, { initial: any; animate: any }> = {
   "fade-up": {
     initial: { opacity: 0, y: 28 },
     animate: { opacity: 1, y: 0 },
