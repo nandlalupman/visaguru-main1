@@ -5,6 +5,13 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("🌱 Seeding CMS content...");
 
+  // ── Clean up old data to prevent duplicates ───────────────────
+  await prisma.videoTestimonial.deleteMany();
+  await prisma.testimonial.deleteMany();
+  await prisma.pricingTier.deleteMany();
+  await prisma.faqItem.deleteMany();
+  console.log("  ✓ Cleared old data");
+
   // ── Services ──────────────────────────────────────────────────
   const services = [
     {

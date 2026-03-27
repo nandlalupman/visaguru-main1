@@ -337,12 +337,21 @@ export default async function Home() {
 
       <section id="case-studies" className="section-padding section-gradient-warm">
         <div className="mx-auto w-full max-w-7xl px-4 md:px-6">
+          {/* ── Stories + Reviews unified header ── */}
           <Reveal>
-            <h2 className="text-center text-3xl text-[var(--color-navy)] md:text-5xl">
+            <p className="text-center text-xs font-semibold uppercase tracking-[0.14em] text-[var(--color-gold)]">
+              Success Stories &amp; Client Reviews
+            </p>
+            <h2 className="mt-3 text-center text-3xl text-[var(--color-navy)] md:text-5xl">
               Real Visa Recovery Stories
             </h2>
+            <p className="mx-auto mt-3 max-w-2xl text-center text-sm text-[var(--color-muted)]">
+              See how we turned refusals into approvals with strategic documentation and expert guidance.
+            </p>
           </Reveal>
-          <div className="mt-8 grid gap-5 md:grid-cols-3">
+
+          {/* ── Case Study Cards ── */}
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
             {homeContent.caseStudies.map((caseStudy) => (
               <Reveal key={caseStudy.title}>
                 <article className="surface-card rounded-2xl p-5">
@@ -385,57 +394,63 @@ export default async function Home() {
             available on request.
           </p>
 
-          <div className="mt-20">
-            <Reveal>
-              <h2 className="text-center text-3xl text-[var(--color-navy)] md:text-5xl">
-                Heard From Our Clients
-              </h2>
-              <p className="mx-auto mt-3 max-w-xl text-center text-sm text-[var(--color-muted)]">
-                Real reviews from real visa applicants we have helped.
-              </p>
-            </Reveal>
-            <div className="mt-8 columns-1 gap-4 md:columns-3">
-              {testimonials.map((item, tIdx) => {
-                const initials = item.name.split(" ").map((w) => w[0]).join("");
-                return (
-                  <Reveal key={item.name}>
-                    <article className="surface-card mb-4 break-inside-avoid rounded-2xl p-5">
-                      <div className="mb-3 flex items-center gap-1 text-[var(--color-gold)]">
-                        {[...Array(item.rating)].map((_, idx) => (
-                          <Star key={`${item.name}-${idx}`} className="h-3.5 w-3.5 fill-current" />
-                        ))}
+          {/* ── Classical ornamental divider ── */}
+          <div className="mx-auto my-16 flex max-w-xs items-center gap-4">
+            <span className="h-px flex-1 bg-gradient-to-r from-transparent via-[var(--color-gold)] to-transparent opacity-40" />
+            <Star className="h-4 w-4 fill-[var(--color-gold)] text-[var(--color-gold)] opacity-60" />
+            <span className="h-px flex-1 bg-gradient-to-r from-transparent via-[var(--color-gold)] to-transparent opacity-40" />
+          </div>
+
+          {/* ── Client Reviews ── */}
+          <Reveal>
+            <h2 className="text-center text-3xl text-[var(--color-navy)] md:text-5xl">
+              Heard From Our Clients
+            </h2>
+            <p className="mx-auto mt-3 max-w-xl text-center text-sm text-[var(--color-muted)]">
+              Real reviews from real visa applicants we have helped.
+            </p>
+          </Reveal>
+          <div className="mt-8 columns-1 gap-4 md:columns-3">
+            {testimonials.map((item, tIdx) => {
+              const initials = item.name.split(" ").map((w) => w[0]).join("");
+              return (
+                <Reveal key={item.name}>
+                  <article className="surface-card mb-4 break-inside-avoid rounded-2xl p-5">
+                    <div className="mb-3 flex items-center gap-1 text-[var(--color-gold)]">
+                      {[...Array(item.rating)].map((_, idx) => (
+                        <Star key={`${item.name}-${idx}`} className="h-3.5 w-3.5 fill-current" />
+                      ))}
+                    </div>
+                    <p className="text-sm leading-relaxed text-[var(--color-muted)]">
+                      &quot;{item.feedback}&quot;
+                    </p>
+                    <div className="mt-4 flex items-center gap-3">
+                      <span className={`avatar-initial avatar-${tIdx % 6}`}>
+                        {initials}
+                      </span>
+                      <div>
+                        <p className="text-sm font-semibold text-[var(--color-navy)]">
+                          {item.name}
+                        </p>
+                        <p className="text-xs text-[var(--color-muted)]">
+                          {item.country} · {item.date}
+                        </p>
                       </div>
-                      <p className="text-sm leading-relaxed text-[var(--color-muted)]">
-                        &quot;{item.feedback}&quot;
-                      </p>
-                      <div className="mt-4 flex items-center gap-3">
-                        <span className={`avatar-initial avatar-${tIdx % 6}`}>
-                          {initials}
-                        </span>
-                        <div>
-                          <p className="text-sm font-semibold text-[var(--color-navy)]">
-                            {item.name}
-                          </p>
-                          <p className="text-xs text-[var(--color-muted)]">
-                            {item.country} · {item.date}
-                          </p>
-                        </div>
-                      </div>
-                    </article>
-                  </Reveal>
-                );
-              })}
-            </div>
-            <div className="mt-6 text-center">
-              <a
-                href={homeContent.googleReviewsUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center rounded-full border border-[var(--color-border)] px-5 py-2.5 text-sm font-semibold text-[var(--color-navy)] transition-all duration-200 hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]"
-              >
-                Read 50+ reviews on Google →
-              </a>
-            </div>
+                    </div>
+                  </article>
+                </Reveal>
+              );
+            })}
+          </div>
+          <div className="mt-6 text-center">
+            <a
+              href={homeContent.googleReviewsUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center rounded-full border border-[var(--color-border)] px-5 py-2.5 text-sm font-semibold text-[var(--color-navy)] transition-all duration-200 hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]"
+            >
+              Read 50+ reviews on Google →
+            </a>
           </div>
         </div>
       </section>
