@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
@@ -89,13 +90,15 @@ export function SiteHeaderClient({
       )}
     >
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-3 md:px-6">
-        <Link href="/" className="group flex items-center gap-3">
-          <span className="text-xl font-semibold tracking-tight text-[var(--color-navy)] transition-colors group-hover:text-[var(--color-gold)] md:text-2xl">
-            {brandName}
-          </span>
-          <span className="hidden rounded-full border border-[var(--color-border)] px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--color-gold)] md:inline-flex">
-            {brandSince}
-          </span>
+        <Link href="/" className="group flex items-center gap-2">
+          <Image
+            src="/images/visaguru-logo.png"
+            alt={brandName}
+            width={180}
+            height={48}
+            className="h-10 w-auto object-contain transition-transform duration-200 group-hover:scale-[1.02] md:h-12"
+            priority
+          />
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">

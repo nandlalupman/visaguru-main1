@@ -1,0 +1,63 @@
+﻿Γû▓ Next.js 16.2.1 (Turbopack)
+
+  Creating an optimized production build ...
+Γ£ô Compiled successfully in 9.1s
+  Running TypeScript ...
+node.exe : Failed to 
+type check.
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo 
+...
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (Failed to typ   
+ e check.:String) [    
+], RemoteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+
+./src/components/reveal
+.tsx:41:7
+Type error: Type 
+'object' is not 
+assignable to type 
+'boolean | 
+TargetAndTransition | 
+VariantLabels | 
+undefined'.
+
+  [90m39 |[0m   
+[36mreturn[0m (
+  [90m40 |[0m     
+<motion.div
+[31m[1m>[0m [90m41 
+|[0m       
+initial={v.initial}
+  [90m   |[0m       
+[31m[1m^[0m
+  [90m42 |[0m       
+whileInView={v.animate}
+  [90m43 |[0m       
+viewport={{ once: 
+[36mtrue[0m, amount: 
+[35m0.15[0m }}
+  [90m44 |[0m       
+transition={{ 
+duration: 
+[35m0.55[0m, delay, 
+ease: [[35m0.4[0m, 
+[35m0[0m, 
+[35m0.2[0m, 
+[35m1[0m] }}
+Next.js build worker 
+exited with code: 1 
+and signal: null

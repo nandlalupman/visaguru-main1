@@ -3,69 +3,77 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "mysql"
+  url      = "mysql://root@localhost:3306/visaguru_db"
 }
 
 enum UserRole {
   user
   admin
+  @@map("user_role")
 }
 
 enum SubmissionStatus {
   new
   in_review
   resolved
+  @@map("submission_status")
 }
 
 enum SubmissionPriority {
   low
   medium
   high
+  @@map("submission_priority")
 }
 
 enum ActorRole {
   user
   admin
   system
+  @@map("submissionupdate_actorRole")
 }
 
 enum PaymentStatus {
   created
   paid
   failed
+  @@map("paymentorder_status")
 }
 
 model User {
-  id           String        @id @default(cuid())
+  id           String         @id @default(cuid())
   name         String
-  email        String        @unique
-  role         UserRole      @default(user)
+  email        String         @unique
+  role         UserRole       @default(user)
   passwordHash String
-  createdAt    DateTime      @default(now())
-  submissions  Submission[]
+  createdAt    DateTime       @default(now())
   paymentOrders PaymentOrder[]
+  submissions  Submission[]
+
+  @@map("user")
 }
 
 model Submission {
-  id         String             @id @default(cuid())
-  userId     String?
-  user       User?              @relation(fields: [userId], references: [id], onDelete: SetNull)
-  fullName   String
-  email      String
-  whatsapp   String
-  visaType   String
-  message    String?
-  fileName   String?
-  status     SubmissionStatus   @default(new)
-  priority   SubmissionPriority @default(medium)
-  assignedTo String?
-  createdAt  DateTime           @default(now())
-  updatedAt  DateTime           @updatedAt
-  updates    SubmissionUpdate[]
+  id               String              @id @default(cuid())
+  userId           String?
+  fullName         String
+  email            String
+  whatsapp         String
+  visaType         String
+  message          String?
+  fileName         String?
+  status           SubmissionStatus    @default(new)
+  priority         SubmissionPriority  @default(medium)
+  assignedTo       String?
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+  user             User?               @relation(fields: [userId], references: [id])
+  updates          SubmissionUpdate[]
 
   @@index([userId])
   @@index([status, createdAt])
+  @@map("submission")
 }
 
 model SubmissionUpdate {
@@ -79,6 +87,7 @@ model SubmissionUpdate {
   createdAt    DateTime         @default(now())
 
   @@index([submissionId, createdAt])
+  @@map("submissionupdate")
 }
 
 model RateLimit {
@@ -90,27 +99,29 @@ model RateLimit {
   updatedAt  DateTime @updatedAt
 
   @@index([bucket, identifier])
+  @@map("ratelimit")
 }
 
 model PaymentOrder {
-  id              String        @id @default(cuid())
-  razorpayOrderId String        @unique
-  razorpayPaymentId String?     @unique
-  planName        String
-  amount          Int
-  currency        String        @default("INR")
-  status          PaymentStatus @default(created)
-  userId          String?
-  user            User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
-  email           String?
-  paidAt          DateTime?
-  failureReason   String?
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
+  id                String        @id @default(cuid())
+  razorpayOrderId   String        @unique
+  razorpayPaymentId String?        @unique
+  planName          String
+  amount            Int
+  currency          String        @default("INR")
+  status            PaymentStatus @default(created)
+  userId            String?
+  user              User?         @relation(fields: [userId], references: [id])
+  email             String?
+  paidAt            DateTime?
+  failureReason     String?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
   events          PaymentEvent[]
 
   @@index([createdAt])
   @@index([status, createdAt])
+  @@map("paymentorder")
 }
 
 model PaymentEvent {
@@ -122,9 +133,8 @@ model PaymentEvent {
   createdAt      DateTime     @default(now())
 
   @@index([paymentOrderId, createdAt])
+  @@map("paymentevent")
 }
-
-// ─── CMS Content Models ───────────────────────────────────────
 
 model SiteService {
   id              String   @id @default(cuid())
@@ -135,12 +145,12 @@ model SiteService {
   description     String   @default("")
   accent          String   @default("accent-uk")
   price           String   @default("")
-  reasonStats     String   @default("[]") // JSON array of strings
-  differentiators String   @default("[]") // JSON array of strings
+  reasonStats     String   @default("[]")
+  differentiators String   @default("[]")
   pricingAnalysis String   @default("")
   pricingFull     String   @default("")
   pricingExpress  String   @default("")
-  testimonials    String   @default("[]") // JSON array of {name, role, feedback}
+  testimonials    String   @default("[]")
   sortOrder       Int      @default(0)
   published       Boolean  @default(true)
   createdAt       DateTime @default(now())
@@ -149,6 +159,7 @@ model SiteService {
 
   @@index([sortOrder])
   @@index([published])
+  @@map("siteservice")
 }
 
 model Testimonial {
@@ -166,6 +177,7 @@ model Testimonial {
   updatedAt DateTime @updatedAt
 
   @@index([published, sortOrder])
+  @@map("testimonial")
 }
 
 model VideoTestimonial {
@@ -181,6 +193,7 @@ model VideoTestimonial {
   updatedAt    DateTime @updatedAt
 
   @@index([published, sortOrder])
+  @@map("videotestimonial")
 }
 
 model BlogPostEntry {
@@ -188,15 +201,16 @@ model BlogPostEntry {
   slug        String   @unique
   title       String
   description String
-  content     String   @default("[]") // JSON array of {heading, paragraphs[]}
+  content     String   @default("[]")
   publishedAt String
   readTime    String   @default("")
   cta         String   @default("")
-  status      String   @default("published") // draft | published
+  status      String   @default("published")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   @@index([status])
+  @@map("blogpostentry")
 }
 
 model FaqItem {
@@ -204,7 +218,7 @@ model FaqItem {
   question  String
   answer    String
   serviceId String?
-  service   SiteService? @relation(fields: [serviceId], references: [id], onDelete: SetNull)
+  service   SiteService? @relation(fields: [serviceId], references: [id])
   sortOrder Int          @default(0)
   published Boolean      @default(true)
   createdAt DateTime     @default(now())
@@ -212,6 +226,7 @@ model FaqItem {
 
   @@index([serviceId, sortOrder])
   @@index([published, sortOrder])
+  @@map("faqitem")
 }
 
 model PricingTier {
@@ -219,7 +234,7 @@ model PricingTier {
   name      String
   price     String
   note      String   @default("")
-  features  String   @default("[]") // JSON array of strings
+  features  String   @default("[]")
   popular   Boolean  @default(false)
   amountInr Int      @default(0)
   sortOrder Int      @default(0)
@@ -228,11 +243,14 @@ model PricingTier {
   updatedAt DateTime @updatedAt
 
   @@index([published, sortOrder])
+  @@map("pricingtier")
 }
 
 model SiteConfig {
   key       String   @id
-  value     String   // JSON value
-  label     String   @default("") // Human-readable label for admin UI
+  value     String
+  label     String   @default("")
   updatedAt DateTime @updatedAt
+
+  @@map("siteconfig")
 }
